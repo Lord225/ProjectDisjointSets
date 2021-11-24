@@ -1,6 +1,5 @@
 #include "pch.h"
 
-
 namespace Tests
 {
 	TEST(TestCaseName, TestName) {
