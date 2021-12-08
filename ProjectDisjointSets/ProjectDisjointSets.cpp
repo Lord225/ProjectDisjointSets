@@ -24,5 +24,6 @@ int main()
 	set.Union(3, 4);
 	set.MakeSet(5);
 	set.Union(4, 5);
+
 	PrintSet(set, { 1,2,3,4,5 });
 }

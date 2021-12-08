@@ -7,9 +7,10 @@ namespace MapImplementation
 	template<typename T>
 	struct Node
 	{
-	public:
 		size_t parent;
 		T data;
+
+
 		Node(size_t parent, T data)
 			: parent(parent), data(data)
 		{}
@@ -29,6 +30,7 @@ namespace MapImplementation
 			// This implementation asserts that parent is always representate
 			return this->_disjoint_sets[t].parent;
 		}
+
 		void Union(size_t x, size_t y) override
 		{
 			size_t rX = Find(x);
@@ -40,12 +42,14 @@ namespace MapImplementation
 					val.parent = rY;
 			}
 		}
+
 		size_t MakeSet(T el) override
 		{
 			size_t unique_id = static_cast<size_t>(el);
 			this->_disjoint_sets.insert(std::make_pair(unique_id, Node<T>(unique_id, el)));
 			return unique_id;
 		}
+
 		T GetElement(size_t t) override
 		{
 			return this->_disjoint_sets[t].data;
