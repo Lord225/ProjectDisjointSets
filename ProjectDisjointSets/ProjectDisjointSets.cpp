@@ -6,8 +6,8 @@
 #include "Implementations/DisjointSetList.h"
 #include "Implementations/DisjointSetTrees.h"
 
-template<typename T, typename EL_TYPE>
-void PrintSet(DisjointSetBase<T, EL_TYPE>& set, std::vector<EL_TYPE> universe)
+template<DisjointSetConcept SetType>
+void PrintSet(SetType& set, std::vector<typename SetType::NodeType> universe)
 {
 	for (auto i : universe)
 	{

@@ -67,9 +67,9 @@ public:
 
 #pragma optimize("", off)
     template<typename T>
-    static void doNotOptimize(T& data) {}
-    //1'000'000'000
-    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000)
+    static T& doNotOptimize(T& data) { return data; }
+
+    Benchmark&& runBenchmark(std::string _name, long double max_time = 1'000'000'000, unsigned long long int max_iters = 50'000)
     {
         name = _name;
         using namespace std::chrono;
@@ -77,7 +77,7 @@ public:
         total_time = 0.0;
         iterations = 0;
 
-        while (total_time < max_time && iterations < 50'000)
+        while (total_time < max_time && iterations < max_iters)
         {
             setup();
 
@@ -138,3 +138,46 @@ public:
     }
 };
 
+class Range
+{
+    int _begin;
+    int _end;
+    int _stride;
+public:
+    Range(int begin, int end, int stride = 1) : _begin(begin), _end(end), _stride(stride)
+    {
+        if (!((begin >= end && stride < 0) || (end >= begin && stride > 0)))
+        {
+            throw std::logic_error("Invalid Range");
+        }
+    }
+    class range_iter
+    {
+    public:
+        int _stride;
+        int _pos;
+
+        range_iter& operator++()
+        {
+            this->_pos += _stride;
+            return *this;
+        }
+        bool operator!=(range_iter& other) const
+        {
+            return other._pos != _pos;
+        }
+        int operator*() const
+        {
+            return _pos;
+        }
+    };
+
+    [[nodiscard]] range_iter begin() const
+    {
+        return range_iter{ _stride, _begin };
+    }
+    [[nodiscard]] range_iter end() const
+    {
+        return range_iter{ _stride, _end };
+    }
+};

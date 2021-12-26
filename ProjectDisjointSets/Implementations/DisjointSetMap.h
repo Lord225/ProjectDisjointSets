@@ -22,6 +22,7 @@ namespace MapImplementation
 	template<typename T>
 	class DisjointSetMap : public DisjointSetBase<T, size_t>
 	{
+		unsigned int unique_counter = 0;
 		using DJSetsReprType = std::map<size_t, Node<T>>;
 		DJSetsReprType _disjoint_sets;
 	public:
@@ -45,7 +46,7 @@ namespace MapImplementation
 
 		size_t MakeSet(T el) override
 		{
-			size_t unique_id = static_cast<size_t>(el);
+			size_t unique_id = unique_counter++;
 			this->_disjoint_sets.insert(std::make_pair(unique_id, Node<T>(unique_id, el)));
 			return unique_id;
 		}
@@ -54,7 +55,6 @@ namespace MapImplementation
 		{
 			return this->_disjoint_sets[t].data;
 		}
-
 	};
 }
 
