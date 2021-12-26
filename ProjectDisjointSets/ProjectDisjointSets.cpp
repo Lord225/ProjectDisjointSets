@@ -7,20 +7,11 @@
 #include "Implementations/DisjointSetTrees.h"
 
 template<typename T, typename EL_TYPE>
-void PrintSet(DisjointSetBase<T, EL_TYPE>& set, std::vector<T> universe)
+void PrintSet(DisjointSetBase<T, EL_TYPE>& set, std::vector<EL_TYPE> universe)
 {
 	for (auto i : universe)
 	{
-		std::cout << i << " " << set.Find(i) << std::endl;
-	}
-}
-
-template<typename T, typename EL_TYPE>
-void PrintSet2(DisjointSetBase<T, EL_TYPE> &set, std::vector<EL_TYPE> universe)
-{
-	for (auto i : universe)
-	{
-		std::cout << i->data << " " << set.Find(i)->data << std::endl;
+		std::cout << i << " " << set.GetElement(set.Find(i)) << std::endl;
 	}
 }
 
@@ -60,7 +51,7 @@ int main()
 		std::cout << list_set.Find(second)->data << "\n";
 		std::cout << list_set.Find(third)->data << "\n";
 
-		PrintSet2(list_set, { first,second,third,fourth });
+		PrintSet(list_set, { first,second,third,fourth });
 	}
 	std::cout << "Trees:\n";
 	{
@@ -79,7 +70,7 @@ int main()
 		std::cout << trees_set.Find(second)->data << "\n";
 		std::cout << trees_set.Find(third)->data << "\n";
 
-		PrintSet2(trees_set, { first,second,third,fourth });
+		PrintSet(trees_set, { first,second,third,fourth });
 	}
 
 }
