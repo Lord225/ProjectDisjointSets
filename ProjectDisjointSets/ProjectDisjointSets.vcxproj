@@ -148,7 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisjointSetBase.h" />
+    <ClInclude Include="Implementations\DisjointSetList.h" />
     <ClInclude Include="Implementations\DisjointSetMap.h" />
+    <ClInclude Include="Implementations\DisjointSetTrees.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
