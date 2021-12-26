@@ -53,7 +53,7 @@ namespace TreesImplementation
 				// Make x the new root
 				rY->parent = rX;
 				// If necessary, increment the rank of x
-				if (rX->rank = rY->rank)
+				if (rX->rank == rY->rank)
 					rX->rank++;
 			}
 		}
