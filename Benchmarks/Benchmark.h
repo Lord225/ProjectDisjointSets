@@ -41,6 +41,7 @@ public:
 
             std::fstream outfile;
 
+
             for (const auto& [name, XY] : xy)
             {
                 outfile.open(path + "/" + name + ".csv", std::ios::trunc | std::ios::out);
@@ -49,6 +50,7 @@ public:
                 for (const auto& [x, y] : XY)
                     outfile << x << "," << y << std::endl;
 
+				std::cout << "Saved: " << path << "/" << name << ".csv" << std::endl;
                 outfile.close();
             }
         }
@@ -69,7 +71,7 @@ public:
     template<typename T>
     static T& doNotOptimize(T& data) { return data; }
 
-    Benchmark&& runBenchmark(std::string _name, long double max_time = 1'000'000'000, unsigned long long int max_iters = 50'000)
+    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000, unsigned long long int max_iters = 50'000)
     {
         name = _name;
         using namespace std::chrono;

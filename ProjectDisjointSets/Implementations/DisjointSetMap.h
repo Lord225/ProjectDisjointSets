@@ -55,6 +55,10 @@ namespace MapImplementation
 		{
 			return this->_disjoint_sets[t].data;
 		}
+		~DisjointSetMap() override
+		{
+
+		}
 	};
 }
 

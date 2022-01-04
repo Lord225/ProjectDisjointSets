@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Implementations\DisjointSetMap.cpp" />
     <ClCompile Include="ProjectDisjointSets.cpp" />
   </ItemGroup>
   <ItemGroup>

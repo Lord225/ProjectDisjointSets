@@ -72,7 +72,7 @@ namespace ListImplementation
 		{
 			return t->data;
 		}
-		~DisjointSetList()
+		~DisjointSetList() override
 		{
 			for (auto &i : nodes)
 			{

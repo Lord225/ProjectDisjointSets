@@ -18,9 +18,6 @@
     <ClCompile Include="ProjectDisjointSets.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Implementations\DisjointSetMap.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisjointSetBase.h">

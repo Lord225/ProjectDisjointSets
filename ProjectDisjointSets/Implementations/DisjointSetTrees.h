@@ -70,9 +70,9 @@ namespace TreesImplementation
 		{
 			return t->data;
 		}
-		~DisjointSetTrees()
+		~DisjointSetTrees() override
 		{
-			for (auto &i : nodes)
+			for (Node<T>* i : nodes)
 			{
 				delete i;
 			}
