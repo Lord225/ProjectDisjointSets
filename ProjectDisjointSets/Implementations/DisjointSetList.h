@@ -12,17 +12,17 @@ namespace ListImplementation
 		T data;
 		int size;
 
-		Node()
-			: repr(this), next(nullptr), data(T()), size(1)
+		Node(T data) : repr(nullptr), next(nullptr), data(data), size(1)
 		{}
 	};
-
 
 	template<typename T>
 	class DisjointSetList : public DisjointSetBase<T, Node<T>*>
 	{
-		std::vector<Node<T>*> nodes;
+		std::vector<std::unique_ptr<Node<T>>> nodes;
 	public:
+		DisjointSetList& operator= (DisjointSetList&&) = default;
+
 		Node<T>* Find(Node<T>* t) override
 		{
 			return t->repr;
@@ -37,21 +37,17 @@ namespace ListImplementation
 				//If necessary rename roots to ensure that we attach a smaller set - y 
 				//to a larger set - x
 				if (rX->size < rY->size)
-				{
-					Node<T> *temp{ rX };
-					rX = rY;
-					rY = temp;
-				}
-				
+					std::swap(rX, rY);
+
 				rX->size += rY->size;
 				//attaching lists
-				while (rX->next)
+				while (rX->next != nullptr)
 				{
 					rX = rX->next;
 				}
 				rX->next = rY;
 
-				while (rY)
+				while (rY != nullptr)
 				{
 					rY->repr = rX->repr;
 					rY = rY->next;
@@ -62,10 +58,9 @@ namespace ListImplementation
 
 		Node<T> *MakeSet(T el) override
 		{
-			Node<T> *new_node{new Node<T>};
-			new_node->data = el;
-			nodes.push_back(new_node);
-			return new_node;
+			nodes.emplace_back(std::make_unique<Node<T>>(Node<T>(el)));
+			nodes[nodes.size() - 1]->repr = nodes[nodes.size() - 1].get();
+			return nodes[nodes.size()-1].get();
 		}
 
 		T GetElement(Node<T> *t) override
@@ -74,10 +69,6 @@ namespace ListImplementation
 		}
 		~DisjointSetList() override
 		{
-			for (auto &i : nodes)
-			{
-				delete i;
-			}
 		}
 	};
 }

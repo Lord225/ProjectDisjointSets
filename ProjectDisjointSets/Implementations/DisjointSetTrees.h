@@ -22,6 +22,13 @@ namespace TreesImplementation
 	{
 		std::vector<Node<T> *> nodes;
 	public:
+		DisjointSetTrees& operator= (DisjointSetTrees&& new_set)
+		{
+			this->~DisjointSetTrees();
+			nodes = std::move(new_set.nodes);
+			return *this;
+		}
+
 		Node<T> *Find(Node<T> *t) override
 		{
 			if (t->parent != t)
@@ -29,8 +36,8 @@ namespace TreesImplementation
 				t->parent = Find(t->parent);
 				return t->parent;
 			}
-			else
-				return t;
+			
+			return t;
 		}
 
 		void Union(Node<T> *x, Node<T> *y) override

@@ -71,7 +71,7 @@ public:
     template<typename T>
     static T& doNotOptimize(T& data) { return data; }
 
-    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000, unsigned long long int max_iters = 50'000)
+    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000, unsigned long long int max_iters = 1'000)
     {
         name = _name;
         using namespace std::chrono;
