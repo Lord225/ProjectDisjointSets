@@ -3,6 +3,9 @@
 #include "../ProjectDisjointSets/Implementations/DisjointSetMap.h"
 #include "../ProjectDisjointSets/Implementations/DisjointSetList.h"
 #include "../ProjectDisjointSets/Implementations/DisjointSetTrees.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesCom.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesComRan.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesRan.h"
 
 template<DisjointSetConcept DisjointSetType>
 class MakeSetBench : public Benchmark

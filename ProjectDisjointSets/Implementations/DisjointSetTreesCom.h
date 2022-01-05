@@ -2,7 +2,7 @@
 #include "../DisjointSetBase.h"
 #include <vector>
 
-namespace TreesImplementation
+namespace TreesComImplementation
 {
 	template<typename T>
 	struct Node
@@ -18,27 +18,26 @@ namespace TreesImplementation
 
 
 	template<typename T>
-	class DisjointSetTrees : public DisjointSetBase<T, Node<T> *>
+	class DisjointSetTreesCom : public DisjointSetBase<T, Node<T> *>
 	{
 		std::vector<Node<T> *> nodes;
 	public:
-		DisjointSetTrees& operator= (DisjointSetTrees&& new_set)
+		DisjointSetTreesCom &operator= (DisjointSetTreesCom &&new_set)
 		{
-			this->~DisjointSetTrees();
+			this->~DisjointSetTreesCom();
 			nodes = std::move(new_set.nodes);
 			return *this;
 		}
 
 		Node<T> *Find(Node<T> *t) override
 		{
-			Node<T> *temp{t};
-			while (temp->parent != temp)
+			if (t->parent != t)
 			{
-				temp = temp->parent;
-				//return t->parent;
+				t->parent = Find(t->parent);
+				return t->parent;
 			}
-			
-			return temp;
+
+			return t;
 		}
 
 		void Union(Node<T> *x, Node<T> *y) override
@@ -78,9 +77,9 @@ namespace TreesImplementation
 		{
 			return t->data;
 		}
-		~DisjointSetTrees() override
+		~DisjointSetTreesCom() override
 		{
-			for (Node<T>* i : nodes)
+			for (Node<T> *i : nodes)
 			{
 				delete i;
 			}

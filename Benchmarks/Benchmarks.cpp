@@ -62,6 +62,13 @@ void benchmark_union_random_function()
         UnionRandomBench<ListImplementation::DisjointSetList<int>>(i, i, 1).runBenchmark("List Union rnd").generate_summary().register_output(registry);
     for (auto i : Range(1'000, 5'000, intervals))
         UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
+   
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i, 1).runBenchmark("Tree Union compression rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i, 1).runBenchmark("Tree Union compression rank rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i, 1).runBenchmark("Tree Union rank rnd").generate_summary().register_output(registry);
 
     registry.generate_csv("../BenchOutput/UnionRnd/");
 }
@@ -121,11 +128,11 @@ int main()
 
     //benchmark_union_with_first_function();
 
-    //benchmark_union_random_function();
+    benchmark_union_random_function();
 
     //benchmark_union_first_and_rnd_function();
 
-    benchmark_union_random_const_to_union_function();
+    //benchmark_union_random_const_to_union_function();
 
     //benchmark_union_with_pre_union_function();
 }

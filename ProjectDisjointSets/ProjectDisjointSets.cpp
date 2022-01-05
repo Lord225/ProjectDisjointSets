@@ -5,6 +5,9 @@
 #include "Implementations/DisjointSetMap.h"
 #include "Implementations/DisjointSetList.h"
 #include "Implementations/DisjointSetTrees.h"
+#include "Implementations/DisjointSetTreesComRan.h"
+#include "Implementations/DisjointSetTreesCom.h"
+#include "Implementations/DisjointSetTreesRan.h"
 
 template<DisjointSetConcept SetType>
 void PrintSet(SetType& set, std::vector<typename SetType::NodeType> universe)
@@ -53,9 +56,66 @@ int main()
 
 		PrintSet(list_set, { first,second,third,fourth });
 	}
-	std::cout << "Trees:\n";
+	std::cout << "\nTrees:\n";
 	{
 		auto trees_set = TreesImplementation::DisjointSetTrees<int>();
+		auto first = trees_set.MakeSet(1);
+		auto second = trees_set.MakeSet(2);
+		auto third = trees_set.MakeSet(3);
+		auto fourth = trees_set.MakeSet(4);
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(first, second);
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(third, second);
+		std::cout << "union third and second\n";
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		std::cout << trees_set.Find(third)->data << "\n";
+
+		PrintSet(trees_set, { first,second,third,fourth });
+	}
+	std::cout << "\nTreesComRan:\n";
+	{
+		auto trees_set = TreesComRanImplementation::DisjointSetTreesComRan<int>();
+		auto first = trees_set.MakeSet(1);
+		auto second = trees_set.MakeSet(2);
+		auto third = trees_set.MakeSet(3);
+		auto fourth = trees_set.MakeSet(4);
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(first, second);
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(third, second);
+		std::cout << "union third and second\n";
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		std::cout << trees_set.Find(third)->data << "\n";
+
+		PrintSet(trees_set, { first,second,third,fourth });
+	}
+	std::cout << "\nTreesCom:\n";
+	{
+		auto trees_set = TreesComImplementation::DisjointSetTreesCom<int>();
+		auto first = trees_set.MakeSet(1);
+		auto second = trees_set.MakeSet(2);
+		auto third = trees_set.MakeSet(3);
+		auto fourth = trees_set.MakeSet(4);
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(first, second);
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		trees_set.Union(third, second);
+		std::cout << "union third and second\n";
+		std::cout << trees_set.Find(first)->data << "\n";
+		std::cout << trees_set.Find(second)->data << "\n";
+		std::cout << trees_set.Find(third)->data << "\n";
+
+		PrintSet(trees_set, { first,second,third,fourth });
+	}
+	std::cout << "\nTreesRan:\n";
+	{
+		auto trees_set = TreesRanImplementation::DisjointSetTreesRan<int>();
 		auto first = trees_set.MakeSet(1);
 		auto second = trees_set.MakeSet(2);
 		auto third = trees_set.MakeSet(3);

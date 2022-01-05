@@ -2,7 +2,7 @@
 #include "../DisjointSetBase.h"
 #include <vector>
 
-namespace TreesImplementation
+namespace TreesComRanImplementation
 {
 	template<typename T>
 	struct Node
@@ -18,27 +18,26 @@ namespace TreesImplementation
 
 
 	template<typename T>
-	class DisjointSetTrees : public DisjointSetBase<T, Node<T> *>
+	class DisjointSetTreesComRan : public DisjointSetBase<T, Node<T> *>
 	{
 		std::vector<Node<T> *> nodes;
 	public:
-		DisjointSetTrees& operator= (DisjointSetTrees&& new_set)
+		DisjointSetTreesComRan &operator= (DisjointSetTreesComRan &&new_set)
 		{
-			this->~DisjointSetTrees();
+			this->~DisjointSetTreesComRan();
 			nodes = std::move(new_set.nodes);
 			return *this;
 		}
 
 		Node<T> *Find(Node<T> *t) override
 		{
-			Node<T> *temp{t};
-			while (temp->parent != temp)
+			if (t->parent != t)
 			{
-				temp = temp->parent;
-				//return t->parent;
+				t->parent = Find(t->parent);
+				return t->parent;
 			}
-			
-			return temp;
+
+			return t;
 		}
 
 		void Union(Node<T> *x, Node<T> *y) override
@@ -52,17 +51,17 @@ namespace TreesImplementation
 
 				// If necessary, rename roots to ensure that
 				// x has rank at least as large as that of y
-				//if (rX->rank < rY->rank)
-				//{
-				//	Node<T> *temp{ rX };
-				//	rX = rY;
-				//	rY = temp;
-				//}
+				if (rX->rank < rY->rank)
+				{
+					Node<T> *temp{ rX };
+					rX = rY;
+					rY = temp;
+				}
 				// Make x the new root
 				rY->parent = rX;
 				// If necessary, increment the rank of x
-				//if (rX->rank == rY->rank)
-				//	rX->rank++;
+				if (rX->rank == rY->rank)
+					rX->rank++;
 			}
 		}
 
@@ -78,9 +77,9 @@ namespace TreesImplementation
 		{
 			return t->data;
 		}
-		~DisjointSetTrees() override
+		~DisjointSetTreesComRan() override
 		{
-			for (Node<T>* i : nodes)
+			for (Node<T> *i : nodes)
 			{
 				delete i;
 			}
