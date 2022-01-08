@@ -31,14 +31,12 @@ namespace TreesImplementation
 
 		Node<T> *Find(Node<T> *t) override
 		{
-			Node<T> *temp{t};
-			while (temp->parent != temp)
+			if (t->parent != t)
 			{
-				temp = temp->parent;
-				//return t->parent;
+				return Find(t->parent);
 			}
-			
-			return temp;
+
+			return t;
 		}
 
 		void Union(Node<T> *x, Node<T> *y) override
