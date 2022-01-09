@@ -169,3 +169,115 @@ public:
     }
 };
 
+
+template<DisjointSetConcept DisjointSetType>
+class UnionRandomMyBench : public Benchmark
+{
+public:
+    DisjointSetType set;
+    using NodeType = DisjointSetType::NodeType;
+    using DataType = DisjointSetType::DataType;
+
+    std::vector<NodeType> universe;
+
+    const int to_insert;
+    const int to_union;
+    const DataType init;
+
+    UnionRandomMyBench(int to_insert, int to_union, DataType init) : to_insert(to_insert), init(init), to_union(to_union) {}
+
+    void setup() override
+    {
+        set = DisjointSetType();
+        universe.clear();
+        for (size_t i = 0; i < to_insert; i++)
+            universe.push_back(set.MakeSet(doNotOptimize(init)));
+        for (size_t i = 0; i < to_insert / 5; i++)
+        {
+            const NodeType first = universe[rand() % universe.size()];
+            const NodeType second = universe[rand() % universe.size()];
+
+            set.Union(first, second);
+        }
+    }
+
+    void bench() override
+    {
+        for (size_t i = 0; i < to_union - 1; i++)
+        {
+            const NodeType first = universe[rand() % universe.size()];
+            const NodeType second = universe[rand() % universe.size()];
+
+            set.Union(first, second);
+        }
+        doNotOptimize(set);
+    }
+
+    long double get_X_mesurment() override
+    {
+        return to_insert;
+    }
+};
+
+template<DisjointSetConcept DisjointSetType>
+class UnionRandomMyBench2 : public Benchmark
+{
+public:
+    DisjointSetType set;
+    using NodeType = DisjointSetType::NodeType;
+    using DataType = DisjointSetType::DataType;
+
+    std::vector<NodeType> universe;
+
+    const int to_insert;
+    const int to_union;
+    const DataType init;
+
+    UnionRandomMyBench2(int to_insert, int to_union, DataType init) : to_insert(to_insert), init(init), to_union(to_union) {}
+
+    void setup() override
+    {
+        set = DisjointSetType();
+        universe.clear();
+        for (size_t i = 0; i < to_insert; i++)
+            universe.push_back(set.MakeSet(doNotOptimize(init)));
+        for (size_t i = 0; i < to_insert / 3; i++)
+        {
+            const NodeType first = universe[i+1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+        for (size_t i = (to_insert / 3)+2; i < 2*(to_insert / 3); i++)
+        {
+            const NodeType first = universe[i+1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+        for (size_t i = 2* (to_insert / 3) + 3; i < (to_insert / 3)-2; i++)
+        {
+            const NodeType first = universe[i+1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+    }
+
+    void bench() override
+    {
+        for (size_t i = 0; i < to_union - 1; i++)
+        {
+            const NodeType first = universe[rand() % universe.size()];
+            const NodeType second = universe[rand() % universe.size()];
+
+            set.Union(first, second);
+        }
+        doNotOptimize(set);
+    }
+
+    long double get_X_mesurment() override
+    {
+        return to_insert;
+    }
+};
