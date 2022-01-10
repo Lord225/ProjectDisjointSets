@@ -47,20 +47,17 @@ namespace TreesRanImplementation
 
 			if (rX != rY)
 			{
-
 				// If necessary, rename roots to ensure that
 				// x has rank at least as large as that of y
 				if (rX->rank < rY->rank)
-				{
-					Node<T> *temp{ rX };
-					rX = rY;
-					rY = temp;
-				}
+					std::swap(rX, rY);
+
 				// Make x the new root
 				rY->parent = rX;
+
 				// If necessary, increment the rank of x
 				if (rX->rank == rY->rank)
-					rX->rank++;
+					rX->rank += 1;
 			}
 		}
 

@@ -71,13 +71,15 @@ public:
     template<typename T>
     static T& doNotOptimize(T& data) { return data; }
 
-    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000, unsigned long long int max_iters = 5'000)
+    Benchmark&& runBenchmark(std::string _name, long double max_time = 500'000'000, unsigned long long int max_iters = 5'000, unsigned long long int timeout = 2'000'000'000)
     {
         name = _name;
         using namespace std::chrono;
 
         total_time = 0.0;
         iterations = 0;
+
+        const auto bench_start = high_resolution_clock::now();
 
         while (total_time < max_time && iterations < max_iters)
         {
@@ -92,6 +94,9 @@ public:
             total_time += duration_cast<nanoseconds>(end - start).count();
 
             iterations += 1;
+
+            if (duration_cast<nanoseconds>(end - bench_start).count() > timeout)
+                break;
         }
         return std::move(*this);
     }

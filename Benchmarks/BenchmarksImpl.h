@@ -5,6 +5,9 @@
 
 RandomArray randomArray;
 
+/// <summary>
+/// 
+/// </summary>
 template<DisjointSetConcept DisjointSetType>
 class MakeSetBench : public Benchmark
 {
