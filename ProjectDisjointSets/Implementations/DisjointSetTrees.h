@@ -47,7 +47,6 @@ namespace TreesImplementation
 
 			if (rX != rY)
 			{
-
 				// If necessary, rename roots to ensure that
 				// x has rank at least as large as that of y
 				//if (rX->rank < rY->rank)

@@ -28,7 +28,6 @@ namespace MapImplementation
 	public:
 		size_t Find(size_t t) override
 		{
-			// This implementation asserts that parent is always representate
 			return this->_disjoint_sets[t].parent;
 		}
 

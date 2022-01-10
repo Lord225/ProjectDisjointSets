@@ -14,6 +14,9 @@ namespace TreesComRanImplementation
 		Node()
 			: parent(this), data(T()), rank(0)
 		{}
+		Node(T data)
+			: parent(this), data(data), rank(0)
+		{}
 	};
 
 
@@ -48,27 +51,23 @@ namespace TreesComRanImplementation
 
 			if (rX != rY)
 			{
-
 				// If necessary, rename roots to ensure that
 				// x has rank at least as large as that of y
 				if (rX->rank < rY->rank)
-				{
-					Node<T> *temp{ rX };
-					rX = rY;
-					rY = temp;
-				}
+					std::swap(rX, rY);
+
 				// Make x the new root
 				rY->parent = rX;
+
 				// If necessary, increment the rank of x
 				if (rX->rank == rY->rank)
-					rX->rank++;
+					rX->rank += 1;
 			}
 		}
 
 		Node<T> *MakeSet(T el) override
 		{
-			Node<T> *new_node{ new Node<T> };
-			new_node->data = el;
+			Node<T> *new_node{ new Node<T>(el) };
 			nodes.push_back(new_node);
 			return new_node;
 		}
@@ -77,6 +76,7 @@ namespace TreesComRanImplementation
 		{
 			return t->data;
 		}
+
 		~DisjointSetTreesComRan() override
 		{
 			for (Node<T> *i : nodes)

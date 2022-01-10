@@ -1,11 +1,6 @@
 #pragma once
-#include "Benchmark.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetMap.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetList.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetTrees.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetTreesCom.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetTreesComRan.h"
-#include "../ProjectDisjointSets/Implementations/DisjointSetTreesRan.h"
+#include "BenchmarkBase.h"
+#include "../ProjectDisjointSets/DisjointSetBase.h"
 
 RandomArray randomArray;
 
@@ -267,6 +262,61 @@ public:
             set.Union(first, second);
         }
         randomness = randomArray.get_random(to_insert);
+    }
+
+    void bench() override
+    {
+        for (size_t i = 0; i < to_find - 1; i++)
+        {
+            set.Find(universe[randomness[i]]);
+        }
+        doNotOptimize(set);
+    }
+
+    long double get_X_mesurment() override
+    {
+        return to_insert;
+    }
+};
+
+template<DisjointSetConcept DisjointSetType>
+class FindOnlyFirst : public Benchmark
+{
+    DisjointSetType set;
+    using NodeType = DisjointSetType::NodeType;
+    using DataType = DisjointSetType::DataType;
+
+    std::vector<NodeType> universe;
+
+    const int to_insert;
+    const int to_find;
+    const DataType init;
+
+    FindOnlyFirst(int to_insert, int to_find, DataType init) : to_insert(to_insert), init(init), to_find(to_find) {}
+
+    void setup() override
+    {
+        set = DisjointSetType();
+        universe.clear();
+        for (size_t i = 0; i < to_insert; i++)
+            universe.push_back(set.MakeSet(doNotOptimize(init)));
+
+        for (size_t i = 0; i < to_insert - 1; i += 2)
+        {
+            set.Union(i, i + 1);
+        }
+        for (size_t i = 1; i < to_insert - 1; i += 4)
+        {
+            set.Union(i, i + 1);
+        }
+        for (size_t i = 3; i < to_insert - 1; i += 8)
+        {
+            set.Union(i, i + 1);
+        }
+        for (size_t i = 7; i < to_insert - 1; i += 16)
+        {
+            set.Union(i, i + 1);
+        }
     }
 
     void bench() override

@@ -53,9 +53,7 @@ namespace TreesComImplementation
 				// x has rank at least as large as that of y
 				//if (rX->rank < rY->rank)
 				//{
-				//	Node<T> *temp{ rX };
-				//	rX = rY;
-				//	rY = temp;
+				//   std::swap(rX, rY);
 				//}
 				// Make x the new root
 				rY->parent = rX;

@@ -1,6 +1,12 @@
 ﻿#include <iostream>
-#include "Benchmark.h"
-#include "DisjointSetBenches.h"
+#include "BenchmarkBase.h"
+#include "BenchmarksImpl.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetMap.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetList.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTrees.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesCom.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesComRan.h"
+#include "../ProjectDisjointSets/Implementations/DisjointSetTreesRan.h"
 
 void benchmark_makeset_function()
 {
@@ -175,9 +181,11 @@ int main()
     //benchmark_union_with_first_function();
 
     //benchmark_union_random_function();
-    //benchmark_union_my_benchmark2();
-    benchmark_find_listish();
-    //benchmark_union_first_and_rnd_function();
+
+
+	benchmark_find_listish();
+
+	//benchmark_union_first_and_rnd_function();
 
     //benchmark_union_random_const_to_union_function();
 
