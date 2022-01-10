@@ -7,6 +7,8 @@
 #include "../ProjectDisjointSets/Implementations/DisjointSetTreesComRan.h"
 #include "../ProjectDisjointSets/Implementations/DisjointSetTreesRan.h"
 
+RandomArray randomArray;
+
 template<DisjointSetConcept DisjointSetType>
 class MakeSetBench : public Benchmark
 {
@@ -219,8 +221,9 @@ public:
     }
 };
 
+
 template<DisjointSetConcept DisjointSetType>
-class UnionRandomMyBench2 : public Benchmark
+class FindListishRandomBench : public Benchmark
 {
 public:
     DisjointSetType set;
@@ -230,10 +233,11 @@ public:
     std::vector<NodeType> universe;
 
     const int to_insert;
-    const int to_union;
+    const int to_find;
     const DataType init;
+    std::vector<int> randomness;
 
-    UnionRandomMyBench2(int to_insert, int to_union, DataType init) : to_insert(to_insert), init(init), to_union(to_union) {}
+    FindListishRandomBench(int to_insert, int to_find, DataType init) : to_insert(to_insert), init(init), to_find(to_find) {}
 
     void setup() override
     {
@@ -243,35 +247,33 @@ public:
             universe.push_back(set.MakeSet(doNotOptimize(init)));
         for (size_t i = 0; i < to_insert / 3; i++)
         {
-            const NodeType first = universe[i+1];
+            const NodeType first = universe[i + 1];
             const NodeType second = universe[i];
 
             set.Union(first, second);
         }
-        for (size_t i = (to_insert / 3)+2; i < 2*(to_insert / 3); i++)
+        for (size_t i = (to_insert / 3) + 2; i < 2 * (to_insert / 3); i++)
         {
-            const NodeType first = universe[i+1];
+            const NodeType first = universe[i + 1];
             const NodeType second = universe[i];
 
             set.Union(first, second);
         }
-        for (size_t i = 2* (to_insert / 3) + 3; i < (to_insert / 3)-2; i++)
+        for (size_t i = 2 * (to_insert / 3) + 3; i < (to_insert / 3) - 2; i++)
         {
-            const NodeType first = universe[i+1];
+            const NodeType first = universe[i + 1];
             const NodeType second = universe[i];
 
             set.Union(first, second);
         }
+        randomness = randomArray.get_random(to_insert);
     }
 
     void bench() override
     {
-        for (size_t i = 0; i < to_union - 1; i++)
+        for (size_t i = 0; i < to_find - 1; i++)
         {
-            const NodeType first = universe[rand() % universe.size()];
-            const NodeType second = universe[rand() % universe.size()];
-
-            set.Union(first, second);
+            set.Find(universe[randomness[i]]);
         }
         doNotOptimize(set);
     }

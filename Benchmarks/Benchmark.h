@@ -183,3 +183,28 @@ public:
         return range_iter{ _stride, _end };
     }
 };
+
+class RandomArray
+{
+    std::map<int, std::vector<int>> random_sets;
+public:
+    std::vector<int> get_random(int num)
+    {
+        if (random_sets.contains(num))
+        {
+            return random_sets[num];
+        }
+        else
+        {
+            for (int i{}; i < num; i++)
+            {
+                random_sets[num].push_back(rand() % num);
+            }
+            return random_sets[num];
+        }
+    }
+    void clear()
+    {
+        random_sets.clear();
+    }
+};
