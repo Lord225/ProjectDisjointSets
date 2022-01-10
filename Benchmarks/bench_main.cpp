@@ -188,7 +188,7 @@ void benchmark_find_listish()
 void fixed_size_union()
 {
     const int intervals = 500;
-    const int to_union_divider = 128;
+    const int to_union_divider = 16;
     BenchmarkRegistry registry;
     const std::string long_string = "Long Long Long Long Long Long String String String String";
 
@@ -221,7 +221,7 @@ int main()
 
     //fixed_size_union();
 
-	//benchmark_find_listish();
+	benchmark_find_listish();
 
 	//benchmark_union_first_and_rnd_function();
 
