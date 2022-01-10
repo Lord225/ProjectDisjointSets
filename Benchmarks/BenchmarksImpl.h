@@ -1,6 +1,7 @@
 #pragma once
 #include "BenchmarkBase.h"
 #include "../ProjectDisjointSets/DisjointSetBase.h"
+#include <random>
 
 RandomArray randomArray;
 
@@ -280,9 +281,13 @@ public:
 };
 
 template<DisjointSetConcept DisjointSetType>
-class FindOnlyFirst : public Benchmark
+class UnionWithFixedSet : public Benchmark
 {
+public:
     DisjointSetType set;
+    std::default_random_engine gen;
+    std::uniform_int_distribution<int> distribution;
+
     using NodeType = DisjointSetType::NodeType;
     using DataType = DisjointSetType::DataType;
 
@@ -292,38 +297,41 @@ class FindOnlyFirst : public Benchmark
     const int to_find;
     const DataType init;
 
-    FindOnlyFirst(int to_insert, int to_find, DataType init) : to_insert(to_insert), init(init), to_find(to_find) {}
+    UnionWithFixedSet(int to_insert, int to_find, DataType init) : to_insert(to_insert), init(init), to_find(to_find) {}
 
     void setup() override
     {
         set = DisjointSetType();
-        universe.clear();
+        gen = std::default_random_engine(42);  // Same seed
+        distribution = std::uniform_int_distribution<int>(0, universe.size());
+    	universe.clear();
+
         for (size_t i = 0; i < to_insert; i++)
             universe.push_back(set.MakeSet(doNotOptimize(init)));
 
-        for (size_t i = 0; i < to_insert - 1; i += 2)
-        {
-            set.Union(i, i + 1);
+        for (size_t i = 0; i < to_insert - 1; i += 2) {
+            set.Union(universe[i], universe[i + 1]);
         }
-        for (size_t i = 1; i < to_insert - 1; i += 4)
-        {
-            set.Union(i, i + 1);
+        for (size_t i = 1; i < to_insert - 1; i += 4) {
+            set.Union(universe[i], universe[i + 1]);
         }
-        for (size_t i = 3; i < to_insert - 1; i += 8)
-        {
-            set.Union(i, i + 1);
+        for (size_t i = 3; i < to_insert - 1; i += 8) {
+            set.Union(universe[i], universe[i + 1]);
         }
-        for (size_t i = 7; i < to_insert - 1; i += 16)
-        {
-            set.Union(i, i + 1);
+        for (size_t i = 7; i < to_insert - 1; i += 16) {
+            set.Union(universe[i], universe[i + 1]);
         }
     }
 
     void bench() override
     {
+        
         for (size_t i = 0; i < to_find - 1; i++)
         {
-            set.Find(universe[randomness[i]]);
+            const NodeType first = universe[distribution(gen)];
+            const NodeType second = universe[distribution(gen)];
+
+            set.Union(first, second);
         }
         doNotOptimize(set);
     }

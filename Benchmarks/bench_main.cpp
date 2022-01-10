@@ -172,6 +172,30 @@ void benchmark_find_listish()
     registry.generate_csv("../BenchOutput/FindListish/");
 }
 
+void fixed_size_union()
+{
+    const int intervals = 500;
+    const int to_union_divider = 128;
+    BenchmarkRegistry registry;
+    const std::string long_string = "Long Long Long Long Long Long String String String String";
+
+    //for (auto i : Range(1'000, 5'000, intervals))
+        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionWithFixedSet<ListImplementation::DisjointSetList<int>>(i, i / to_union_divider, 1).runBenchmark("List Union Const rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionWithFixedSet<TreesImplementation::DisjointSetTrees<int>>(i, i / to_union_divider, 1).runBenchmark("Tree Union Const rnd").generate_summary().register_output(registry);
+
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionWithFixedSet<TreesComImplementation::DisjointSetTreesCom<int>>(i, i / to_union_divider, 1).runBenchmark("Tree Union Const compression rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionWithFixedSet<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i / to_union_divider, 1).runBenchmark("Tree Union Const compression rank rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionWithFixedSet<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i / to_union_divider, 1).runBenchmark("Tree Union Const rank rnd").generate_summary().register_output(registry);
+
+    registry.generate_csv("../BenchOutput/UnionConst/");
+}
+
 int main()
 {
     std::cout << "Benchmarks:\n";
@@ -182,8 +206,9 @@ int main()
 
     //benchmark_union_random_function();
 
+    fixed_size_union();
 
-	benchmark_find_listish();
+	//benchmark_find_listish();
 
 	//benchmark_union_first_and_rnd_function();
 
