@@ -22,33 +22,24 @@ auto universe = std::vector<Implementation<int>::NodeType>();\
 for (int i = 0; i < 10; i++) {\
 	universe.emplace_back(set.MakeSet(i));\
 }\
-\
 set.Union(universe[0], universe[1]);\
-\
 ASSERT_EQ(set.Find(universe[0]), set.Find(universe[1]));\
-\
 set.Union(universe[2], universe[3]);\
-\
 ASSERT_EQ(set.Find(universe[2]), set.Find(universe[3]));\
-\
 set.Union(universe[0], universe[2]);\
-\
 ASSERT_EQ(set.Find(universe[0]), set.Find(universe[0]));\
 ASSERT_EQ(set.Find(universe[0]), set.Find(universe[1]));\
 ASSERT_EQ(set.Find(universe[0]), set.Find(universe[2]));\
 ASSERT_EQ(set.Find(universe[0]), set.Find(universe[3]));\
-\
 for (size_t i = 4; i < 10; i++) {\
 	ASSERT_NE(set.Find(universe[0]), set.Find(universe[i]));\
 }\
-\
 set.Union(universe[4], universe[5]);\
 set.Union(universe[6], universe[7]);\
-\
 ASSERT_NE(set.Find(universe[4]), set.Find(universe[6]));\
 ASSERT_NE(set.Find(universe[5]), set.Find(universe[6]));\
 ASSERT_NE(set.Find(universe[4]), set.Find(universe[7]));\
-ASSERT_NE(set.Find(universe[5]), set.Find(universe[7]));}\
+ASSERT_NE(set.Find(universe[5]), set.Find(universe[7]));}
 
 #define UNION_SET_TEST_MACRO(TestName, Implementation) TEST(TestUnion, TestName) { \
 auto set = Implementation<int>();\
