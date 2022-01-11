@@ -91,6 +91,13 @@ void benchmark_union_random_const_to_union_function()
         UnionRandomBench<ListImplementation::DisjointSetList<int>>(i, 100, 1).runBenchmark("(Const To union) List Union rnd", 100'000'000, 50'000).generate_summary().register_output(registry);
     for (auto i : Range(1'000, 5'000, intervals))
         UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, 100, 1).runBenchmark("(Const To union) Tree Union rnd", 100'000'000, 50'000).generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, 100, 1).runBenchmark("(Const To union) Tree Union rnd compression", 100'000'000, 50'000).generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, 100, 1).runBenchmark("(Const To union) Tree Union rnd compression rank rnd", 100'000'000, 50'000).generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, 100, 1).runBenchmark("(Const To union) Tree Union rnd rank rnd", 100'000'000, 50'000).generate_summary().register_output(registry);
+
 
     registry.generate_csv("../BenchOutput/UnionRndConstToUnion/");
 }
@@ -110,7 +117,7 @@ void benchmark_union_first_and_rnd_function()
     for (auto i : Range(1'000, 5'000, intervals))
         UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
 
-    registry.generate_csv("../BenchOutput/UnionRnd2/");
+    registry.generate_csv("../BenchOutput/ /");
 }
 
 void benchmark_union_with_pre_union_function()
@@ -119,11 +126,17 @@ void benchmark_union_with_pre_union_function()
     BenchmarkRegistry registry;
 
     for (auto i : Range(1'000, 5'000, intervals))
-        PreUnionRandomBench<ListImplementation::DisjointSetList<int>>(i, i, 100, 1).runBenchmark("List Union first").generate_summary().register_output(registry);
+        PreUnionRandomBench<ListImplementation::DisjointSetList<int>>(i, i/100, 100, 1).runBenchmark("List Union first (groups)").generate_summary().register_output(registry);
     for (auto i : Range(1'000, 5'000, intervals))
-        PreUnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i, 100, 1).runBenchmark("Tree Union first").generate_summary().register_output(registry);
+        PreUnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i / 100, 100, 1).runBenchmark("Tree Union first (groups)").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        PreUnionRandomBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i / 100, 100, 1).runBenchmark("Tree Union first (groups) compression").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        PreUnionRandomBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i / 100, 100, 1).runBenchmark("Tree Union first (groups) compression rank rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        PreUnionRandomBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i / 100, 100, 1).runBenchmark("Tree Union first (groups) rank rnd").generate_summary().register_output(registry);
 
-    registry.generate_csv("../BenchOutput/UnionRnd3/");
+    registry.generate_csv("../BenchOutput/UnionRndGroups/");
 }
 void benchmark_union_my_benchmark()
 {
@@ -247,8 +260,8 @@ int main()
 
 	//benchmark_union_first_and_rnd_function();
 
-    //benchmark_union_random_const_to_union_function();
+    benchmark_union_random_const_to_union_function();
 
-    //benchmark_union_with_pre_union_function();
+    benchmark_union_with_pre_union_function();
 }
 
