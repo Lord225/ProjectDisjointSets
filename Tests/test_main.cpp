@@ -112,4 +112,86 @@ namespace Tests
 	UNION_SET_TEST_MACRO(TreesComTest, TreesComImplementation::DisjointSetTreesCom);
 	UNION_SET_TEST_MACRO(TreesComRanTest, TreesComRanImplementation::DisjointSetTreesComRan);
 	UNION_SET_TEST_MACRO(TreesRanTest, TreesRanImplementation::DisjointSetTreesRan);
+
+	TEST(TestPreciseUnion, TreesTest) {
+		auto set = TreesImplementation::DisjointSetTrees<int>();
+		auto universe = std::vector<TreesImplementation::DisjointSetTrees<int>::NodeType>(); 
+		for (int i = 0; i < 100; i++) {
+			universe.emplace_back(set.MakeSet(i)); 
+		}
+		auto x = set.Find(universe[0]);
+
+		for (int i = 0; i < 99; i++) {
+			set.Union(universe[i+1], universe[i]);
+		}
+
+		auto repr = universe[99];
+		for (int i = 0; i < 100; i++) {
+			ASSERT_EQ(repr, set.Find(universe[i]));
+		}
+		for (int i = 0; i < 99; i++) {
+			ASSERT_EQ(universe[i]->parent, universe[i+1]); 
+		}
+	}
+	TEST(TestPreciseUnion, TreesComTest) {
+		auto set = TreesComImplementation::DisjointSetTreesCom<int>();
+		auto universe = std::vector<TreesComImplementation::DisjointSetTreesCom<int>::NodeType>();
+
+		for (int i = 0; i < 10; i++) {
+			universe.emplace_back(set.MakeSet(i));
+		}
+
+		set.Union(universe[0], universe[1]);
+		set.Union(universe[0], universe[2]);
+		set.Union(universe[0], universe[3]);
+		set.Union(universe[4], universe[5]);
+		set.Union(universe[5], universe[6]);
+		set.Union(universe[1], universe[6]);
+		set.Union(universe[7], universe[8]);
+		set.Union(universe[8], universe[9]);
+		set.Union(universe[0], universe[9]);
+
+		for (int i = 0; i < 10; i++) {
+			ASSERT_EQ(set.Find(universe[0]), set.Find(universe[i]));
+		}
+
+		const auto x = set.Find(universe[0]);
+
+		for (size_t i = 0; i < 10; i++){
+			ASSERT_EQ(universe[0]->parent, x);
+		}
+	}
+	TEST(TestPreciseUnion, TreesRanTest) {
+		auto set = TreesRanImplementation::DisjointSetTreesRan<int>();
+		auto universe = std::vector<TreesRanImplementation::DisjointSetTreesRan<int>::NodeType>();
+
+		for (int i = 0; i < 10; i++) {
+			universe.emplace_back(set.MakeSet(i));
+		}
+
+		set.Union(universe[0], universe[1]);
+
+		ASSERT_EQ(universe[0]->rank, 1);
+		ASSERT_EQ(universe[1]->rank, 0);
+
+		set.Union(universe[2], universe[3]);
+		set.Union(universe[2], universe[1]);
+
+		ASSERT_EQ(universe[0]->rank, 1);
+		ASSERT_EQ(universe[1]->rank, 0);
+		ASSERT_EQ(universe[2]->rank, 2);
+		ASSERT_EQ(universe[3]->rank, 0);
+
+		set.Union(universe[4], universe[5]);
+		set.Union(universe[4], universe[2]);
+
+		ASSERT_EQ(universe[0]->rank, 1);
+		ASSERT_EQ(universe[1]->rank, 0);
+		ASSERT_EQ(universe[2]->rank, 2);
+		ASSERT_EQ(universe[3]->rank, 0);
+		ASSERT_EQ(universe[4]->rank, 1);
+		ASSERT_EQ(universe[5]->rank, 0);
+
+		ASSERT_EQ(universe[4]->parent, universe[2]);
+	}
 }
