@@ -148,7 +148,10 @@ void benchmark_union_my_benchmark()
     registry.generate_csv("../BenchOutput/UnionMichal/");
 }
 
-
+/*
+* Tworzy trzy duże zbiory, łączy je tak że w reprezentacji drzewiastej powstaje drzewo podobne do listy, testuje operacje find na określonej liczbie
+* losowo wybranych elementów - pokazuje problem z reprezentacją drzewiastą gdy jest bez kompresji ścieżki i union by rank
+*/
 void benchmark_find_listish()
 {
     const int intervals = 500;
@@ -172,6 +175,36 @@ void benchmark_find_listish()
     registry.generate_csv("../BenchOutput/FindListish/");
 }
 
+/*
+* Tworzy trzy duże zbiory, łączy je tak że w reprezentacji drzewiastej powstaje drzewo podobne do listy, testuje operacje find(małą ilość) na określonej liczbie
+* losowo wybranych elementów - pokazuje problem z reprezentacją drzewiastą gdy jest bez kompresji ścieżki i union by rank
+*/
+void benchmark_find_listish_low_number()
+{
+    const int intervals = 500;
+    BenchmarkRegistry registry;
+    const std::string long_string = "Long Long Long Long Long Long String String String String";
+
+    //for (auto i : Range(1'000, 5'000, intervals))
+        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        FindListishRandomBench<ListImplementation::DisjointSetList<int>>(i, i / 100, 1).runBenchmark("List Find Listish rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        FindListishRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i / 100, 1).runBenchmark("Tree Find Listish rnd").generate_summary().register_output(registry);
+
+    for (auto i : Range(1'000, 5'000, intervals))
+        FindListishRandomBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i / 100, 1).runBenchmark("Tree Find Listish compression rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        FindListishRandomBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i /100, 1).runBenchmark("Tree Find Listish compression rank rnd").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        FindListishRandomBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i / 100, 1).runBenchmark("Tree Find Listish rank rnd").generate_summary().register_output(registry);
+
+    registry.generate_csv("../BenchOutput/FindListishLowNumber/");
+}
+
+/*
+* Tworzy zbiory po 16 elementów każdy, następnie wykonuje union na ustalonej liczbie losowo wybranych elementów
+*/
 void fixed_size_union()
 {
     const int intervals = 500;
@@ -206,9 +239,11 @@ int main()
 
     //benchmark_union_random_function();
 
-    fixed_size_union();
+    //fixed_size_union();
 
-	benchmark_find_listish();
+	//benchmark_find_listish();
+
+    benchmark_find_listish_low_number();
 
 	//benchmark_union_first_and_rnd_function();
 
