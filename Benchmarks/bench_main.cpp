@@ -242,6 +242,69 @@ void fixed_size_union()
     registry.generate_csv("../BenchOutput/UnionConst/");
 }
 
+
+void benchmark_find_listish_fixed_size_varying_finds()
+{
+    const int intervals = 0;
+    BenchmarkRegistry registry;
+    const std::string long_string = "Long Long Long Long Long Long String String String String";
+    int size{ 2000 };
+
+
+    //for (auto i : Range(1'000, 5'000, intervals))
+        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'010, intervals))
+    for (int i{ 10 }; i < 100; i += 10)
+        FindListishRandomBenchFixedSizeVaryingFinds<ListImplementation::DisjointSetList<int>>(size, i , 1).runBenchmark("List Find Listish rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 10 }; i < 100; i += 10)
+        FindListishRandomBenchFixedSizeVaryingFinds<TreesImplementation::DisjointSetTrees<int>>(size, i , 1).runBenchmark("Tree Find Listish rnd").generate_summary().register_output(registry);
+
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 10 }; i < 100; i += 10)
+        FindListishRandomBenchFixedSizeVaryingFinds<TreesComImplementation::DisjointSetTreesCom<int>>(size, i , 1).runBenchmark("Tree Find Listish compression rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 10 }; i < 100; i += 10)
+        FindListishRandomBenchFixedSizeVaryingFinds<TreesComRanImplementation::DisjointSetTreesComRan<int>>(size, i , 1).runBenchmark("Tree Find Listish compression rank rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 10 }; i < 100; i += 10)
+        FindListishRandomBenchFixedSizeVaryingFinds<TreesRanImplementation::DisjointSetTreesRan<int>>(size, i , 1).runBenchmark("Tree Find Listish rank rnd").generate_summary().register_output(registry);
+
+    registry.generate_csv("../BenchOutput/FindListishFixedSizeVaryingFinds/");
+}
+
+
+void benchmark_funion_different_size_sets()
+{
+    const int intervals = 0;
+    BenchmarkRegistry registry;
+    const std::string long_string = "Long Long Long Long Long Long String String String String";
+    int size{ 5000 };
+    int to_union{ 700 };
+
+
+    //for (auto i : Range(1'000, 5'000, intervals))
+        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'010, intervals))
+    for (int i{ 2 }; i <= 500; i = i*i)
+        UnionWithDifferentSizeSets<ListImplementation::DisjointSetList<int>>(size, to_union,i, 1).runBenchmark("List union Listish rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 2 }; i <= 500; i = i * i)
+        UnionWithDifferentSizeSets<TreesImplementation::DisjointSetTrees<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rnd").generate_summary().register_output(registry);
+
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 2 }; i <= 500; i = i * i)
+        UnionWithDifferentSizeSets<TreesComImplementation::DisjointSetTreesCom<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish compression rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 2 }; i <= 500; i = i * i)
+        UnionWithDifferentSizeSets<TreesComRanImplementation::DisjointSetTreesComRan<int>>(size, to_union,i, 1).runBenchmark("Tree union compression rank rnd").generate_summary().register_output(registry);
+    //for (auto i : Range(10, 1'000, intervals))
+    for (int i{ 2 }; i <= 500; i = i * i)
+        UnionWithDifferentSizeSets<TreesRanImplementation::DisjointSetTreesRan<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rank rnd").generate_summary().register_output(registry);
+
+    registry.generate_csv("../BenchOutput/UnionWithDifferentSizeSets/");
+}
+
 int main()
 {
     std::cout << "Benchmarks:\n";
@@ -256,12 +319,15 @@ int main()
 
 	//benchmark_find_listish();
 
-    benchmark_find_listish_low_number();
+    //benchmark_find_listish_low_number();
+
+    //benchmark_find_listish_fixed_size_varying_finds();
+    //benchmark_funion_different_size_sets();
 
 	//benchmark_union_first_and_rnd_function();
 
-    benchmark_union_random_const_to_union_function();
+    //benchmark_union_random_const_to_union_function();
 
-    benchmark_union_with_pre_union_function();
+    //benchmark_union_with_pre_union_function();
 }
 

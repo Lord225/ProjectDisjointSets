@@ -344,3 +344,142 @@ public:
         return to_insert;
     }
 };
+
+
+template<DisjointSetConcept DisjointSetType>
+class FindListishRandomBenchFixedSizeVaryingFinds : public Benchmark
+{
+public:
+    DisjointSetType set;
+    using NodeType = DisjointSetType::NodeType;
+    using DataType = DisjointSetType::DataType;
+
+    std::vector<NodeType> universe;
+
+    const int to_insert;
+    const int to_find;
+    const DataType init;
+    std::vector<int> randomness;
+
+    FindListishRandomBenchFixedSizeVaryingFinds(int to_insert, int to_find, DataType init) : to_insert(to_insert), init(init), to_find(to_find) {}
+
+    void setup() override
+    {
+        set = DisjointSetType();
+        universe.clear();
+        for (size_t i = 0; i < to_insert; i++)
+            universe.push_back(set.MakeSet(doNotOptimize(init)));
+        for (size_t i = 0; i < to_insert / 3; i++)
+        {
+            const NodeType first = universe[i + 1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+        for (size_t i = (to_insert / 3) + 2; i < 2 * (to_insert / 3); i++)
+        {
+            const NodeType first = universe[i + 1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+        for (size_t i = 2 * (to_insert / 3) + 3; i < (to_insert / 3) - 2; i++)
+        {
+            const NodeType first = universe[i + 1];
+            const NodeType second = universe[i];
+
+            set.Union(first, second);
+        }
+        //randomness = randomArray.get_random(to_find+1000);
+    }
+
+    void bench() override
+    {
+        for (size_t i = 0; i < to_find - 1; i++)
+        {
+            //set.Find(universe[randomness[i]]);
+            set.Find(universe[rand() % universe.size()]);
+        }
+        doNotOptimize(set);
+    }
+
+    long double get_X_mesurment() override
+    {
+        return to_find;
+    }
+};
+
+
+template<DisjointSetConcept DisjointSetType>
+class UnionWithDifferentSizeSets : public Benchmark
+{
+public:
+    DisjointSetType set;
+    std::default_random_engine gen;
+    std::uniform_int_distribution<int> distribution;
+
+    using NodeType = DisjointSetType::NodeType;
+    using DataType = DisjointSetType::DataType;
+
+    std::vector<NodeType> universe;
+
+    const int to_insert;
+    const int to_union;
+    const int in_set;
+    const DataType init;
+
+    UnionWithDifferentSizeSets(int to_insert, int to_union,int in_set, DataType init) : to_insert(to_insert), init(init), to_union(to_union), in_set(in_set) {}
+
+    void setup() override
+    {
+        set = DisjointSetType();
+        gen = std::default_random_engine(42);  // Same seed
+        distribution = std::uniform_int_distribution<int>(0, to_insert);
+        universe.clear();
+
+        for (size_t i = 0; i < to_insert; i++)
+            universe.push_back(set.MakeSet(doNotOptimize(init)));
+
+        //for (size_t i = 0; i < to_insert - 1; i += 2) {
+        //    set.Union(universe[i], universe[i + 1]);
+        //}
+        //for (size_t i = 1; i < to_insert - 1; i += 4) {
+        //    set.Union(universe[i], universe[i + 1]);
+        //}
+        //for (size_t i = 3; i < to_insert - 1; i += 8) {
+        //    set.Union(universe[i], universe[i + 1]);
+        //}
+        //for (size_t i = 7; i < to_insert - 1; i += 16) {
+        //    set.Union(universe[i], universe[i + 1]);
+        //}
+        int help{ 1 };
+
+        for (int dep{ 2 }; dep <= in_set; dep = dep * dep)
+        {
+            for (int i{ help - 1 }; i < to_insert - 1; i += dep)
+            {
+                set.Union(universe[i], universe[i + 1]);
+            }
+            help = help * 2;
+        }
+
+    }
+
+    void bench() override
+    {
+
+        for (size_t i = 0; i < to_union - 1; i++)
+        {
+            const NodeType first = universe[distribution(gen)];
+            const NodeType second = universe[distribution(gen)];
+
+            set.Union(first, second);
+        }
+        doNotOptimize(set);
+    }
+
+    long double get_X_mesurment() override
+    {
+        return in_set;
+    }
+};
