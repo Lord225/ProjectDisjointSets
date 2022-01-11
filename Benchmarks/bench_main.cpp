@@ -31,7 +31,9 @@ void benchmark_makeset_function()
 
     registry.generate_csv("../BenchOutput/MakeSet/");
 }
-
+/// <summary>
+/// Łączy wszystke Zbiory do pierwszego utworzonego. (Test wydajności Union'a)
+/// </summary>
 void benchmark_union_with_first_function()
 {
     const int intervals = 100;
@@ -52,10 +54,20 @@ void benchmark_union_with_first_function()
     for (auto i : Range(1'000, 5'000, intervals))
         UnionAllWithFirstBench<TreesImplementation::DisjointSetTrees<std::string>>(i, long_string).runBenchmark("Tree Union first (str)").generate_summary().register_output(registry);
 
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i, 1).runBenchmark("Tree Union compression first").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i, 1).runBenchmark("Tree Union compression rank first").generate_summary().register_output(registry);
+    for (auto i : Range(1'000, 5'000, intervals))
+        UnionRandomBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i, 1).runBenchmark("Tree Union rank first").generate_summary().register_output(registry);
 
-    registry.generate_csv("../BenchOutput/Union/");
+
+    registry.generate_csv("../BenchOutput/UnionFirst/");
 }
 
+/// <summary>
+/// Łączy ze sobą losowo zbiory (i elementów, i-krotnie łączy dwa losowe zbiory)
+/// </summary>
 void benchmark_union_random_function()
 {
     const int intervals = 100;
@@ -79,6 +91,9 @@ void benchmark_union_random_function()
     registry.generate_csv("../BenchOutput/UnionRnd/");
 }
 
+/// <summary>
+/// Łączy ze sobą losowo zbiory (i elementów, wykonuje zawsze 100 Unionów.)
+/// </summary>
 void benchmark_union_random_const_to_union_function()
 {
     const int intervals = 100;
@@ -102,24 +117,27 @@ void benchmark_union_random_const_to_union_function()
     registry.generate_csv("../BenchOutput/UnionRndConstToUnion/");
 }
 
-void benchmark_union_first_and_rnd_function()
-{
-    const int intervals = 100;
-    BenchmarkRegistry registry;
+//void benchmark_union_first_and_rnd_function()
+//{
+//    const int intervals = 100;
+//    BenchmarkRegistry registry;
+//
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionAllWithFirstBench<ListImplementation::DisjointSetList<int>>(i, 1).runBenchmark("List Union first").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionAllWithFirstBench<TreesImplementation::DisjointSetTrees<int>>(i, 1).runBenchmark("Tree Union first").generate_summary().register_output(registry);
+//
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomBench<ListImplementation::DisjointSetList<int>>(i, i, 1).runBenchmark("List Union rnd").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
+//
+//    registry.generate_csv("../BenchOutput/UnionRndAndFirst/");
+//}
 
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionAllWithFirstBench<ListImplementation::DisjointSetList<int>>(i, 1).runBenchmark("List Union first").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionAllWithFirstBench<TreesImplementation::DisjointSetTrees<int>>(i, 1).runBenchmark("Tree Union first").generate_summary().register_output(registry);
-
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomBench<ListImplementation::DisjointSetList<int>>(i, i, 1).runBenchmark("List Union rnd").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
-
-    registry.generate_csv("../BenchOutput/ /");
-}
-
+/// <summary>
+/// Łączy ze sobą losowo zbiory (Iniciuje ze zbiorami składającymi się ze 100 elementów)
+/// </summary>
 void benchmark_union_with_pre_union_function()
 {
     const int intervals = 100;
@@ -138,28 +156,28 @@ void benchmark_union_with_pre_union_function()
 
     registry.generate_csv("../BenchOutput/UnionRndGroups/");
 }
-void benchmark_union_my_benchmark()
-{
-    const int intervals = 1000;
-    BenchmarkRegistry registry;
-    const std::string long_string = "Long Long Long Long Long Long String String String String";
-
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomMyBench<MapImplementation::DisjointSetMap<int>>(i, i/2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomMyBench<ListImplementation::DisjointSetList<int>>(i, i/2, 1).runBenchmark("List Union rnd").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i/2, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
-
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomMyBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i/2, 1).runBenchmark("Tree Union compression rnd").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomMyBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i/2, 1).runBenchmark("Tree Union compression rank rnd").generate_summary().register_output(registry);
-    for (auto i : Range(1'000, 5'000, intervals))
-        UnionRandomMyBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i/2, 1).runBenchmark("Tree Union rank rnd").generate_summary().register_output(registry);
-
-    registry.generate_csv("../BenchOutput/UnionMichal/");
-}
+//void benchmark_union_my_benchmark()
+//{
+//    const int intervals = 1000;
+//    BenchmarkRegistry registry;
+//    const std::string long_string = "Long Long Long Long Long Long String String String String";
+//
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomMyBench<MapImplementation::DisjointSetMap<int>>(i, i/2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomMyBench<ListImplementation::DisjointSetList<int>>(i, i/2, 1).runBenchmark("List Union rnd").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomBench<TreesImplementation::DisjointSetTrees<int>>(i, i/2, 1).runBenchmark("Tree Union rnd").generate_summary().register_output(registry);
+//
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomMyBench<TreesComImplementation::DisjointSetTreesCom<int>>(i, i/2, 1).runBenchmark("Tree Union compression rnd").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomMyBench<TreesComRanImplementation::DisjointSetTreesComRan<int>>(i, i/2, 1).runBenchmark("Tree Union compression rank rnd").generate_summary().register_output(registry);
+//    for (auto i : Range(1'000, 5'000, intervals))
+//        UnionRandomMyBench<TreesRanImplementation::DisjointSetTreesRan<int>>(i, i/2, 1).runBenchmark("Tree Union rank rnd").generate_summary().register_output(registry);
+//
+//    registry.generate_csv("../BenchOutput/UnionMichal/");
+//}
 
 /*
 * Tworzy trzy duże zbiory, łączy je tak że w reprezentacji drzewiastej powstaje drzewo podobne do listy, testuje operacje find na określonej liczbie
@@ -242,10 +260,12 @@ void fixed_size_union()
     registry.generate_csv("../BenchOutput/UnionConst/");
 }
 
-
+/// <summary>
+/// Benchmarkuje findy, Zmienna ilość findów, stała ilośc elementów.
+/// </summary>
 void benchmark_find_listish_fixed_size_varying_finds()
 {
-    const int intervals = 0;
+    const int intervals = 10;
     BenchmarkRegistry registry;
     const std::string long_string = "Long Long Long Long Long Long String String String String";
     int size{ 2000 };
@@ -254,56 +274,51 @@ void benchmark_find_listish_fixed_size_varying_finds()
     //for (auto i : Range(1'000, 5'000, intervals))
         //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
     //for (auto i : Range(10, 1'010, intervals))
-    for (int i{ 10 }; i < 100; i += 10)
+    for (auto i : Range(10, 100, intervals))
         FindListishRandomBenchFixedSizeVaryingFinds<ListImplementation::DisjointSetList<int>>(size, i , 1).runBenchmark("List Find Listish rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 10 }; i < 100; i += 10)
+    for (auto i : Range(10, 100, intervals))
         FindListishRandomBenchFixedSizeVaryingFinds<TreesImplementation::DisjointSetTrees<int>>(size, i , 1).runBenchmark("Tree Find Listish rnd").generate_summary().register_output(registry);
-
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 10 }; i < 100; i += 10)
+    for (auto i : Range(10, 100, intervals))
         FindListishRandomBenchFixedSizeVaryingFinds<TreesComImplementation::DisjointSetTreesCom<int>>(size, i , 1).runBenchmark("Tree Find Listish compression rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 10 }; i < 100; i += 10)
+    for (auto i : Range(10, 100, intervals))
         FindListishRandomBenchFixedSizeVaryingFinds<TreesComRanImplementation::DisjointSetTreesComRan<int>>(size, i , 1).runBenchmark("Tree Find Listish compression rank rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 10 }; i < 100; i += 10)
+    for (auto i : Range(10, 100, intervals))
         FindListishRandomBenchFixedSizeVaryingFinds<TreesRanImplementation::DisjointSetTreesRan<int>>(size, i , 1).runBenchmark("Tree Find Listish rank rnd").generate_summary().register_output(registry);
 
     registry.generate_csv("../BenchOutput/FindListishFixedSizeVaryingFinds/");
 }
 
 
-void benchmark_funion_different_size_sets()
-{
-    const int intervals = 0;
-    BenchmarkRegistry registry;
-    const std::string long_string = "Long Long Long Long Long Long String String String String";
-    int size{ 5000 };
-    int to_union{ 700 };
-
-
-    //for (auto i : Range(1'000, 5'000, intervals))
-        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'010, intervals))
-    for (int i{ 2 }; i <= 500; i = i*i)
-        UnionWithDifferentSizeSets<ListImplementation::DisjointSetList<int>>(size, to_union,i, 1).runBenchmark("List union Listish rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 2 }; i <= 500; i = i * i)
-        UnionWithDifferentSizeSets<TreesImplementation::DisjointSetTrees<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rnd").generate_summary().register_output(registry);
-
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 2 }; i <= 500; i = i * i)
-        UnionWithDifferentSizeSets<TreesComImplementation::DisjointSetTreesCom<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish compression rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 2 }; i <= 500; i = i * i)
-        UnionWithDifferentSizeSets<TreesComRanImplementation::DisjointSetTreesComRan<int>>(size, to_union,i, 1).runBenchmark("Tree union compression rank rnd").generate_summary().register_output(registry);
-    //for (auto i : Range(10, 1'000, intervals))
-    for (int i{ 2 }; i <= 500; i = i * i)
-        UnionWithDifferentSizeSets<TreesRanImplementation::DisjointSetTreesRan<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rank rnd").generate_summary().register_output(registry);
-
-    registry.generate_csv("../BenchOutput/UnionWithDifferentSizeSets/");
-}
+//void benchmark_funion_different_size_sets()
+//{
+//    const int intervals = 0;
+//    BenchmarkRegistry registry;
+//    const std::string long_string = "Long Long Long Long Long Long String String String String";
+//    int size{ 5000 };
+//    int to_union{ 700 };
+//
+//
+//    //for (auto i : Range(1'000, 5'000, intervals))
+//        //FindListishRandomBench<MapImplementation::DisjointSetMap<int>>(i, i / 2, 1).runBenchmark("Map Union rnd").generate_summary().register_output(registry);
+//    //for (auto i : Range(10, 1'010, intervals))
+//    for (int i{ 2 }; i <= 500; i = i*i)
+//        UnionWithDifferentSizeSets<ListImplementation::DisjointSetList<int>>(size, to_union,i, 1).runBenchmark("List union Listish rnd").generate_summary().register_output(registry);
+//    //for (auto i : Range(10, 1'000, intervals))
+//    for (int i{ 2 }; i <= 500; i = i * i)
+//        UnionWithDifferentSizeSets<TreesImplementation::DisjointSetTrees<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rnd").generate_summary().register_output(registry);
+//
+//    //for (auto i : Range(10, 1'000, intervals))
+//    for (int i{ 2 }; i <= 500; i = i * i)
+//        UnionWithDifferentSizeSets<TreesComImplementation::DisjointSetTreesCom<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish compression rnd").generate_summary().register_output(registry);
+//    //for (auto i : Range(10, 1'000, intervals))
+//    for (int i{ 2 }; i <= 500; i = i * i)
+//        UnionWithDifferentSizeSets<TreesComRanImplementation::DisjointSetTreesComRan<int>>(size, to_union,i, 1).runBenchmark("Tree union compression rank rnd").generate_summary().register_output(registry);
+//    //for (auto i : Range(10, 1'000, intervals))
+//    for (int i{ 2 }; i <= 500; i = i * i)
+//        UnionWithDifferentSizeSets<TreesRanImplementation::DisjointSetTreesRan<int>>(size, to_union,i, 1).runBenchmark("Tree union Listish rank rnd").generate_summary().register_output(registry);
+//
+//    registry.generate_csv("../BenchOutput/UnionWithDifferentSizeSets/");
+//}
 
 int main()
 {
@@ -311,23 +326,20 @@ int main()
 
     //benchmark_makeset_function();
 
-    //benchmark_union_with_first_function();
+    benchmark_union_with_first_function();
 
-    //benchmark_union_random_function();
+    benchmark_union_random_function();
 
-    //fixed_size_union();
+    fixed_size_union();
 
-	//benchmark_find_listish();
+	benchmark_find_listish();
 
-    //benchmark_find_listish_low_number();
+    benchmark_find_listish_low_number();
 
-    //benchmark_find_listish_fixed_size_varying_finds();
-    //benchmark_funion_different_size_sets();
+    benchmark_find_listish_fixed_size_varying_finds();
 
-	//benchmark_union_first_and_rnd_function();
+    benchmark_union_random_const_to_union_function();
 
-    //benchmark_union_random_const_to_union_function();
-
-    //benchmark_union_with_pre_union_function();
+    benchmark_union_with_pre_union_function();
 }
 

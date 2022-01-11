@@ -171,7 +171,7 @@ public:
         }
         bool operator!=(range_iter& other) const
         {
-            return other._pos != _pos;
+            return other._pos >= _pos;
         }
         int operator*() const
         {
