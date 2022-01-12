@@ -185,4 +185,42 @@ namespace Tests
 
 		ASSERT_EQ(universe[4]->parent, universe[2]);
 	}
+	//Doadane pozniej
+	TEST(TestList, ListTest) {
+		auto set = ListImplementation::DisjointSetList<int>();
+		auto universe = std::vector<ListImplementation::DisjointSetList<int>::NodeType>();
+
+		for (int i = 0; i < 10; i++) {
+			universe.emplace_back(set.MakeSet(i));
+		}
+
+		set.Union(universe[0], universe[1]);
+		set.Union(universe[0], universe[2]);
+		set.Union(universe[0], universe[3]);
+		set.Union(universe[4], universe[5]);
+		set.Union(universe[5], universe[6]);
+		set.Union(universe[6], universe[1]);//czy dziala swapping - laczenie mniejszej do wiekszej
+		set.Union(universe[8], universe[7]);
+		set.Union(universe[8], universe[9]);
+		set.Union(universe[0], universe[9]);
+
+		for (int i = 0; i < 10; i++) {
+			ASSERT_EQ(set.Find(universe[0]), set.Find(universe[i]));
+		}
+
+		const auto x = set.Find(universe[0]);
+
+		for (size_t i = 0; i < 10; i++) {
+			ASSERT_EQ(universe[0]->repr, x);
+		}
+		ASSERT_EQ(universe[0]->next, universe[1]);
+		ASSERT_EQ(universe[1]->next, universe[2]);
+		ASSERT_EQ(universe[2]->next, universe[3]);
+		ASSERT_EQ(universe[3]->next, universe[4]);
+		ASSERT_EQ(universe[4]->next, universe[5]);
+		ASSERT_EQ(universe[5]->next, universe[6]);
+		ASSERT_EQ(universe[6]->next, universe[8]);
+		ASSERT_EQ(universe[8]->next, universe[7]);
+		ASSERT_EQ(universe[7]->next, universe[9]);
+	}
 }
