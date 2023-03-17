@@ -1,3 +1,4 @@
+## DisjointSets
 Projekt grupowy implementujący z użyciem C++20 algorytmy zbiorów rozłącznych. Repo zawiera:
 * 6 implementacji zbiorów rozłącznych
 * Testy jednostkowe dla każdego z nich
@@ -27,7 +28,7 @@ Projekt grupowy implementujący z użyciem C++20 algorytmy zbiorów rozłącznyc
 * Tests - Projekt zawierający testy
   * `test_main.cpp` - Main testów i ich implementacja
   * `TestOutput.png` - Wynik działania projektu
-
+  
 ## Overview
 
 ![Prezentacja AiSD (0)](https://user-images.githubusercontent.com/49908210/167669112-412343c7-bbaa-405a-b70f-1ebcdd3aca3f.svg)
@@ -47,3 +48,6 @@ Projekt grupowy implementujący z użyciem C++20 algorytmy zbiorów rozłącznyc
 ![Prezentacja AiSD (14)](https://user-images.githubusercontent.com/49908210/167669627-535da503-656a-4a7b-ab52-fd63b97beea4.svg)
 ![Prezentacja AiSD (15)](https://user-images.githubusercontent.com/49908210/167669641-b889aef9-8ea0-4209-9032-0918d7e3ab72.svg)
 ![Prezentacja AiSD (16)](https://user-images.githubusercontent.com/49908210/167669651-255231ac-2ce0-453a-baf1-959deb6ef622.svg)
+
+## Wyniki testów
+![Screen z konsoli](Tests/TestsOutput.png)
